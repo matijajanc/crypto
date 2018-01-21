@@ -1,0 +1,8 @@
+#index:
+#    path: /
+#    controller: App\Controller\DefaultController::index
+
+statistics:
+    path:     /
+    controller: App\Controller\StatisticsController::index
+    methods: GET
