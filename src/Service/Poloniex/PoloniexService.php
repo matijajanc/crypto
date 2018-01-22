@@ -18,7 +18,7 @@ class PoloniexService
 
     /**
      * PoloniexService constructor.
-     * @param PoloniexApi $poloniex
+     * @param PoloniexApi $api
      * @param CryptoFilters $filters
      */
     public function __construct(PoloniexApi $api, CryptoFilters $filters)
@@ -29,7 +29,6 @@ class PoloniexService
 
     /**
      * Get Crypto Balances
-     *
      * @return array
      */
     public function getBalances() {

@@ -9,8 +9,14 @@ class CryptocompareService
      */
     protected $api;
 
+    /**
+     * @var array
+     */
     protected $currencys;
 
+    /**
+     * @var array
+     */
     protected $cryptocurrencys;
 
     /**
@@ -28,7 +34,6 @@ class CryptocompareService
 
     /**
      * Get Multi Prices
-     *
      * @return array
      */
     public function getMultiPrices(): array

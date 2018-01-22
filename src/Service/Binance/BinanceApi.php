@@ -8,12 +8,23 @@ use GuzzleHttp\Exception\RequestException;
 
 class BinanceApi
 {
+    /**
+     * @var string
+     */
     protected $apiKey;
 
+    /**
+     * @var string
+     */
     protected $apiSecret;
 
     const BINANCE_URL = "https://www.binance.com/api/";
 
+    /**
+     * BinanceApi constructor.
+     * @param string $apiKey
+     * @param string $apiSecret
+     */
     public function __construct(string $apiKey, string $apiSecret)
     {
         $this->apiKey = $apiKey;
@@ -32,7 +43,6 @@ class BinanceApi
         $params['timestamp'] = $this->generateTimestamp();
         $params['recvWindow'] = 6000000;
         $params['signature'] = $this->generatePostDataString($params);
-
         try {
             $client = new Client();
             $response = $client->request('GET', self::BINANCE_URL.$uri,
@@ -47,7 +57,6 @@ class BinanceApi
                     'http_errors' => false
                 ]);
             $response = $response->getBody()->getContents();
-
             return json_decode($response, true);
         } catch (RequestException $e) {
             return $e->getResponse();

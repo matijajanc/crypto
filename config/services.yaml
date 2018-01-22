@@ -3,15 +3,16 @@
 parameters:
   money: 1250
   currencys: [EUR,USD]
+  # Cryptocurrencies in wallets they have number of tokens defined, but you list all tokes that you own
   cryptocurrencys:
     ETH: 0.197
-    XRP: 182
+    XRP: 119
     ADA: 269
-    XLM: 229
+    XLM: 0
     TRX: 3949
-    XVG: 630
-    BCN: 3990
-    DOGE: 2368
+    XVG: 0
+    BCN: 0
+    DOGE: 0
   poloniex_api_key: '%env(POLONIEX_API_KEY)%'
   poloniex_api_secret: '%env(POLONIEX_API_SECRET)%'
   binance_api_key: '%env(BINANCE_API_KEY)%'
@@ -55,3 +56,7 @@ services:
       arguments:
         $apiKey: '%binance_api_key%'
         $apiSecret: '%binance_api_secret%'
+
+    App\Service\Wallet\WalletService:
+          arguments:
+            $cryptocurrencys: '%cryptocurrencys%'
