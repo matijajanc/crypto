@@ -16,9 +16,9 @@ class StatisticsController extends Controller
         $allCryptocurrencies = $cryptocurrencies->getCryptocurrencies();
         $calcCrypto = $calculateCryptocurrencies->calcCryptocurrencies($allCryptocurrencies);
         $sumCrypto = $calculateCryptocurrencies->sumCryptocurrencies($calcCrypto);
-        var_dump($allCryptocurrencies);
-        var_dump($calcCrypto);
-        var_dump($sumCrypto); exit;
+//        var_dump($allCryptocurrencies);
+//        var_dump($calcCrypto);
+//        var_dump($sumCrypto); exit;
 
         return $this->render('statistics.html.twig');
     }

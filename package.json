@@ -1,0 +1,21 @@
+{
+  "name": "cryptocurrencies",
+  "version": "1.0.0",
+  "description": "crypto",
+  "main": "webpack.config.js",
+  "dependencies": {},
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@bitbucket.org/mjanc/crypto.git"
+  },
+  "keywords": [
+    "crypto"
+  ],
+  "author": "Matija Janc",
+  "license": "ISC",
+  "homepage": "https://bitbucket.org/mjanc/crypto#readme"
+}
