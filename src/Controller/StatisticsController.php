@@ -10,16 +10,19 @@ class StatisticsController extends Controller
 {
     public function index(Cryptocurrencies $cryptocurrencies, CalculateCryptocurrencies $calculateCryptocurrencies)
     {
-        echo "<pre>";
-            
-        
+        //echo "<pre>";
         $allCryptocurrencies = $cryptocurrencies->getCryptocurrencies();
         $calcCrypto = $calculateCryptocurrencies->calcCryptocurrencies($allCryptocurrencies);
         $sumCrypto = $calculateCryptocurrencies->sumCryptocurrencies($calcCrypto);
+
+//        echo "<pre>";
 //        var_dump($allCryptocurrencies);
 //        var_dump($calcCrypto);
 //        var_dump($sumCrypto); exit;
 
-        return $this->render('statistics.html.twig');
+        return $this->render('statistics.html.twig', [
+            'total' => $sumCrypto,
+            'cryptocurrencies' => $calcCrypto
+        ]);
     }
 }

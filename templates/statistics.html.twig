@@ -1,5 +1,37 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
+<div class="row">
+    <div class="col-lg-12">
+        <div class="ibox float-e-margins">
+            <div class="ibox-title">
+                {#<span class="label label-success pull-right">Monthly</span>#}
+                <h5>Total</h5>
+            </div>
+            <div class="ibox-content">
+                <h1 class="no-margins">{{ total['eur'] }}€</h1>
+                <div class="stat-percent font-bold {{ (total['diff'] < 100) ? 'text-danger' : 'text-info' }}">{{ total['diff']|number_format(2, ',', '') }}% <i class="fa fa-level-down"></i></div>
+                <small>1250€</small>
+            </div>
+        </div>
+    </div>
+</div>
 
+<div class="row">
+    {% for key, crypto in cryptocurrencies %}
+        <div class="col-lg-3">
+            <div class="ibox float-e-margins">
+                <div class="ibox-title">
+                    <span class="label label-success pull-right">{{ crypto['tokens']|number_format(3, ',', '') }}</span>
+                    <h5>{{ key }}</h5>
+                </div>
+                <div class="ibox-content">
+                    <h1 class="no-margins">{{ crypto['EUR_PRICE']|number_format(2, ',', '') }}€</h1>
+                    {#<div class="stat-percent font-bold text-info">98% <i class="fa fa-level-up"></i></div>#}
+                    <small>{{ crypto['EUR']|number_format(2, ',', '') }}€/{{ crypto['USD']|number_format(2, ',', '') }}$</small>
+                </div>
+            </div>
+        </div>
+    {% endfor %}
+</div>
 {% endblock %}

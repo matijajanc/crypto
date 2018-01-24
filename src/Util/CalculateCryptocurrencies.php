@@ -28,7 +28,13 @@ class CalculateCryptocurrencies
         }
         $eur = $this->priceFormat($eur);
         $usd = $this->priceFormat($usd);
-        return compact('eur', 'usd');
+        $diff = $this->getDifferenceInInput((float) $eur);      // Correct, transform not correct!!!
+        return compact('eur', 'usd', 'diff');
+    }
+
+    private function getDifferenceInInput(float $eur)
+    {
+        return ((1250 - $eur)/1250)*100;        // read from params !!!!!!!!
     }
 
     private function mergeCryptocurrencies($balances)
@@ -52,6 +58,7 @@ class CalculateCryptocurrencies
         foreach ($tokens as $cryptoCode => $item) {
             foreach ($item as $currencyCode => $currency) {
                 $tokens[$cryptoCode][$currencyCode.'_PRICE'] = $currency * $cryptocurrencies[$cryptoCode];
+                $tokens[$cryptoCode]['tokens'] = $cryptocurrencies[$cryptoCode];
             }
         }
         return $tokens;
