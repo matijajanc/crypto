@@ -2,8 +2,8 @@
 
 namespace App\Service\Binance;
 
-use App\Service\Binance\Response\FormatResponses;
-use App\Util\CryptoFilters;
+use App\Service\Binance\Api\BinanceApi;
+use App\Service\Binance\Mapper\BinanceMapper;
 
 class BinanceService
 {
@@ -13,26 +13,19 @@ class BinanceService
     protected $api;
 
     /**
-     * @var CryptoFilters
+     * @var BinanceMapper
      */
-    protected $filters;
-
-    /**
-     * @var FormatResponses
-     */
-    protected $format;
+    protected $mapper;
 
     /**
      * BinanceService constructor.
      * @param BinanceApi $api
-     * @param CryptoFilters $filters
-     * @param FormatResponses $format
+     * @param BinanceMapper $mapper
      */
-    public function __construct(BinanceApi $api, CryptoFilters $filters, FormatResponses $format)
+    public function __construct(BinanceApi $api, BinanceMapper $mapper)
     {
         $this->api = $api;
-        $this->filters = $filters;
-        $this->format = $format;
+        $this->mapper = $mapper;
     }
 
     /**
@@ -41,7 +34,7 @@ class BinanceService
      */
     public function getBalances()
     {
-        return $this->format->arangeAccountResponse($this->getAccountInformation());
+        return $this->mapper->remapBalances($this->getAccountInformation());
     }
 
     /**
@@ -50,6 +43,6 @@ class BinanceService
      */
     public function getAccountInformation()
     {
-        return $this->filters->filterBinanceCryptocurrencies($this->api->getBinanceApiRequest('v3/account'));
+        return $this->api->getBinanceApiRequest('v3/account');
     }
 }

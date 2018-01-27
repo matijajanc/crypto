@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Service\Binance;
+namespace App\Service\Binance\Api;
 
 
 use GuzzleHttp\Client;
@@ -19,6 +19,8 @@ class BinanceApi
     protected $apiSecret;
 
     const BINANCE_URL = "https://www.binance.com/api/";
+
+    const RECV_WINDOW = 6000000;
 
     /**
      * BinanceApi constructor.
@@ -41,7 +43,7 @@ class BinanceApi
     public function getBinanceApiRequest(string $uri, array $params = [])
     {
         $params['timestamp'] = $this->generateTimestamp();
-        $params['recvWindow'] = 6000000;
+        $params['recvWindow'] = self::RECV_WINDOW;
         $params['signature'] = $this->generatePostDataString($params);
         try {
             $client = new Client();

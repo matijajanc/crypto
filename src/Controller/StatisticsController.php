@@ -2,18 +2,19 @@
 
 namespace App\Controller;
 
+use App\Service\CalculateCrypto\CalculateCryptoService;
 use App\Util\CalculateCryptocurrencies;
 use App\Util\Cryptocurrencies;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
 class StatisticsController extends Controller
 {
-    public function index(Cryptocurrencies $cryptocurrencies, CalculateCryptocurrencies $calculateCryptocurrencies)
+    public function index(Cryptocurrencies $cryptocurrencies, CalculateCryptoService $calculateCrypto)
     {
         //echo "<pre>";
         $allCryptocurrencies = $cryptocurrencies->getCryptocurrencies();
-        $calcCrypto = $calculateCryptocurrencies->calcCryptocurrencies($allCryptocurrencies);
-        $sumCrypto = $calculateCryptocurrencies->sumCryptocurrencies($calcCrypto);
+        $calcCrypto = $calculateCrypto->calcCryptocurrencies($allCryptocurrencies);
+        $sumCrypto = $calculateCrypto->sumCryptocurrencies($calcCrypto);
 
 //        echo "<pre>";
 //        var_dump($allCryptocurrencies);

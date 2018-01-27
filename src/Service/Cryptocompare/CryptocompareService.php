@@ -2,6 +2,8 @@
 
 namespace App\Service\Cryptocompare;
 
+use App\Service\Cryptocompare\Api\CryptocompareApi;
+
 class CryptocompareService
 {
     /**

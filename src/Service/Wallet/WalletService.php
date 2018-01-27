@@ -2,6 +2,8 @@
 
 namespace App\Service\Wallet;
 
+use App\Service\Wallet\Mapper\WalletMapper;
+
 class WalletService
 {
     /**
@@ -10,12 +12,19 @@ class WalletService
     protected $cryptocurrencys;
 
     /**
+     * @var WalletMapper
+     */
+    protected $mapper;
+
+    /**
      * WalletService constructor.
      * @param array $cryptocurrencys
+     * @param WalletMapper $mapper
      */
-    public function __construct(array $cryptocurrencys)
+    public function __construct(array $cryptocurrencys, WalletMapper $mapper)
     {
         $this->cryptocurrencys = $cryptocurrencys;
+        $this->mapper = $mapper;
     }
 
     /**
@@ -24,6 +33,6 @@ class WalletService
      */
     public function getBalances()
     {
-        return $this->cryptocurrencys;
+        return $this->mapper->remapBalances($this->cryptocurrencys);
     }
 }

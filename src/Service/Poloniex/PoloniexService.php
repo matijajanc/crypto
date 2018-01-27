@@ -2,7 +2,8 @@
 
 namespace App\Service\Poloniex;
 
-use App\Util\CryptoFilters;
+use App\Service\Poloniex\Api\PoloniexApi;
+use App\Service\Poloniex\Mapper\PoloniexMapper;
 
 class PoloniexService
 {
@@ -12,19 +13,19 @@ class PoloniexService
     protected $api;
 
     /**
-     * @var CryptoFilters
+     * @var PoloniexMapper
      */
-    protected $filters;
+    protected $mapper;
 
     /**
      * PoloniexService constructor.
      * @param PoloniexApi $api
-     * @param CryptoFilters $filters
+     * @param PoloniexMapper $mapper
      */
-    public function __construct(PoloniexApi $api, CryptoFilters $filters)
+    public function __construct(PoloniexApi $api, PoloniexMapper $mapper)
     {
         $this->api = $api;
-        $this->filters = $filters;
+        $this->mapper = $mapper;
     }
 
     /**
@@ -32,7 +33,7 @@ class PoloniexService
      * @return array
      */
     public function getBalances() {
-        return $this->filters->filterPoloniexCryptocurrencies($this->api->getPoloniexApiRequest([
+        return $this->mapper->remapBalances($this->api->getPoloniexApiRequest([
                 'command' => 'returnBalances'
             ]
         ));

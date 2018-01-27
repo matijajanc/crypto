@@ -1,15 +1,18 @@
 <?php
 
-namespace App\Util;
+namespace App\Service\CalculateCrypto;
 
 use App\Service\Cryptocompare\CryptocompareService;
 
-class CalculateCryptocurrencies
+class CalculateCryptoService
 {
+    protected $moneyInvested;
+
     protected $cryptocompare;
 
-    public function __construct(CryptocompareService $cryptocompare)
+    public function __construct($money_invested, CryptocompareService $cryptocompare)
     {
+        $this->moneyInvested = $money_invested;
         $this->cryptocompare = $cryptocompare;
     }
 
@@ -34,7 +37,7 @@ class CalculateCryptocurrencies
 
     private function getDifferenceInInput(float $eur)
     {
-        return ((1250 - $eur)/1250)*100;        // read from params !!!!!!!!
+        return (($this->moneyInvested - $eur)/$this->moneyInvested)*100;
     }
 
     private function mergeCryptocurrencies($balances)

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Service\Poloniex;
+namespace App\Service\Poloniex\Api;
 
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\RequestException;

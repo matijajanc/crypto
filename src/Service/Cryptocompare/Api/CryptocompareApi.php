@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Service\Cryptocompare;
+namespace App\Service\Cryptocompare\Api;
 
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\RequestException;
