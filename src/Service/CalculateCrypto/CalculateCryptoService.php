@@ -2,6 +2,7 @@
 
 namespace App\Service\CalculateCrypto;
 
+use App\Helpers\PriceHelper;
 use App\Service\Cryptocompare\CryptocompareService;
 
 class CalculateCryptoService
@@ -22,16 +23,23 @@ class CalculateCryptoService
     protected $cryptocompare;
 
     /**
+     * @var PriceHelper
+     */
+    protected $priceHelper;
+
+    /**
      * CalculateCryptoService constructor.
      * @param $money_invested
      * @param $cryptocurrencies
      * @param CryptocompareService $cryptocompare
+     * @param PriceHelper $priceHelper
      */
-    public function __construct($money_invested, $cryptocurrencies, CryptocompareService $cryptocompare)
+    public function __construct($money_invested, $cryptocurrencies, CryptocompareService $cryptocompare, PriceHelper $priceHelper)
     {
         $this->moneyInvested = $money_invested;
         $this->cryptocurrencies = $cryptocurrencies;
         $this->cryptocompare = $cryptocompare;
+        $this->priceHelper = $priceHelper;
     }
 
     public function calcCryptocurrencies(array $cryptocurrencies): array
@@ -47,9 +55,9 @@ class CalculateCryptoService
             $eur += $cryptocurrency['EUR_PRICE'];
             $usd += $cryptocurrency['USD_PRICE'];
         }
-        $diff = $this->calculatePercentage($this->moneyInvested, $eur);
-        $eur = $this->priceFormat($eur);
-        $usd = $this->priceFormat($usd);
+        $diff = $this->priceHelper->calculatePercentage($this->moneyInvested, $eur);
+        $eur = $this->priceHelper->priceFormat($eur);
+        $usd = $this->priceHelper->priceFormat($usd);
         return compact('eur', 'usd', 'diff');
     }
     
@@ -76,30 +84,8 @@ class CalculateCryptoService
                 $tokens[$cryptoCode][$currencyCode.'_PRICE'] = $currency * $cryptocurrencies[$cryptoCode];
             }
             $tokens[$cryptoCode]['tokens'] = $cryptocurrencies[$cryptoCode];
-            $tokens[$cryptoCode]['percentage_diff'] = $this->calculatePercentage($this->cryptocurrencies[$cryptoCode][1], (array_shift($item) * $cryptocurrencies[$cryptoCode]));
+            $tokens[$cryptoCode]['percentage_diff'] = $this->priceHelper->calculatePercentage($this->cryptocurrencies[$cryptoCode][1], (array_shift($item) * $cryptocurrencies[$cryptoCode]));
         }
         return $tokens;
-    }
-
-    /**
-     * Format Price
-     * @param float $price
-     * @return string
-     */
-    public function priceFormat(float $price)
-    {
-        $decimal = $price < 1 ? 3 : 2;
-        return number_format($price, $decimal, ',', '');
-    }
-
-    /**
-     * Calculate Percantage Difference Between Original & New Value
-     * @param float $originalValue
-     * @param float $newValue
-     * @return float
-     */
-    public function calculatePercentage(float $originalValue, float $newValue): float
-    {
-        return ($newValue - $originalValue)/$originalValue * 100;
     }
 }
