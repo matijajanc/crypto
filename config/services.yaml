@@ -4,7 +4,7 @@ parameters:
   money_invested: 1250
   currencys: [EUR,USD]
   # Cryptocurrencies in wallets they have number of tokens defined, but you list all tokes that you own
-  cryptocurrencys:
+  cryptocurrencies:
     ETH:
       - 0.197
       - 200
@@ -62,7 +62,7 @@ services:
     App\Service\Cryptocompare\CryptocompareService:
       arguments:
         $currencys: '%currencys%'
-        $cryptocurrencys: '%cryptocurrencys%'
+        $cryptocurrencies: '%cryptocurrencies%'
 
     App\Service\Poloniex\Api\PoloniexApi:
       arguments:
@@ -76,8 +76,13 @@ services:
 
     App\Service\Wallet\WalletService:
       arguments:
-        $cryptocurrencys: '%cryptocurrencys%'
+        $cryptocurrencies: '%cryptocurrencies%'
 
     App\Service\CalculateCrypto\CalculateCryptoService:
       arguments:
         $money_invested: '%money_invested%'
+        $cryptocurrencies: '%cryptocurrencies%'
+
+    App\Service\Wallet\Mapper\WalletMapper:
+      arguments:
+        $cryptocurrencies: '%cryptocurrencies%'

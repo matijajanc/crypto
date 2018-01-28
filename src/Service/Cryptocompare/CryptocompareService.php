@@ -19,7 +19,7 @@ class CryptocompareService
     /**
      * @var array
      */
-    protected $cryptocurrencys;
+    protected $cryptocurrencies;
 
     /**
      * CryptocompareService constructor.
@@ -27,11 +27,11 @@ class CryptocompareService
      * @param array $currencys
      * @param array $cryptocurrencys
      */
-    public function __construct(CryptocompareApi $api, array $currencys, array $cryptocurrencys)
+    public function __construct(CryptocompareApi $api, array $currencys, array $cryptocurrencies)
     {
         $this->api = $api;
         $this->currencys = $currencys;
-        $this->cryptocurrencys = $cryptocurrencys;
+        $this->cryptocurrencies = $cryptocurrencies;
     }
 
     /**
@@ -41,7 +41,7 @@ class CryptocompareService
     public function getMultiPrices(): array
     {
         return $this->api->getCryptocompareApiRequest('data/pricemulti', [
-            'fsyms' => implode(',', array_keys($this->cryptocurrencys)),
+            'fsyms' => implode(',', array_keys($this->cryptocurrencies)),
             'tsyms' => implode(',', $this->currencys)
         ]);
     }

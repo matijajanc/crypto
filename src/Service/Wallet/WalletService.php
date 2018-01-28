@@ -21,9 +21,9 @@ class WalletService
      * @param array $cryptocurrencys
      * @param WalletMapper $mapper
      */
-    public function __construct(array $cryptocurrencys, WalletMapper $mapper)
+    public function __construct(array $cryptocurrencies, WalletMapper $mapper)
     {
-        $this->cryptocurrencys = $cryptocurrencys;
+        $this->cryptocurrencys = $cryptocurrencies;
         $this->mapper = $mapper;
     }
 
