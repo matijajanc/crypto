@@ -2,6 +2,9 @@
 #    path: /
 #    controller: App\Controller\DefaultController::index
 
+fos_user:
+    resource: "@FOSUserBundle/Resources/config/routing/all.xml"
+
 statistics:
     path:     /
     controller: App\Controller\StatisticsController::index

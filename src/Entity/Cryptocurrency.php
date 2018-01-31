@@ -27,7 +27,7 @@ class Cryptocurrency
     private $investedMoney;
 
     /**
-     * @return mixed
+     * @return int
      */
     public function getId()
     {
@@ -35,7 +35,7 @@ class Cryptocurrency
     }
 
     /**
-     * @return mixed
+     * @return float
      */
     public function getTokens()
     {
@@ -43,7 +43,7 @@ class Cryptocurrency
     }
 
     /**
-     * @param mixed $tokens
+     * @param float $tokens
      */
     public function setTokens($tokens)
     {
@@ -51,7 +51,7 @@ class Cryptocurrency
     }
 
     /**
-     * @return mixed
+     * @return float
      */
     public function getInvestedMoney()
     {
@@ -59,7 +59,7 @@ class Cryptocurrency
     }
 
     /**
-     * @param mixed $investedMoney
+     * @param float $investedMoney
      */
     public function setInvestedMoney($investedMoney)
     {
