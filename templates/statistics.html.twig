@@ -9,9 +9,9 @@
                 <h5>Total</h5>
             </div>
             <div class="ibox-content">
-                <h1 class="no-margins">{{ total['eur'] }}€</h1>
+                <h1 class="no-margins">{{ total['eur']|number_format(2, ',', '') }}{{ currency_symbol }}</h1>
                 <div class="stat-percent font-bold {{ (total['diff'] < 100) ? 'text-danger' : 'text-navy' }}">{{ total['diff']|number_format(2, ',', '') }}% <i class="fa {{ total['diff'] > 1 ? 'fa-level-up' : 'fa-level-down' }}"></i></div>
-                <small>1250€</small>
+                <small>{{ money_invested }}{{ currency_symbol }}</small>
             </div>
         </div>
     </div>
@@ -26,7 +26,7 @@
                     <h5>{{ key }}</h5>
                 </div>
                 <div class="ibox-content">
-                    <h1 class="no-margins">{{ crypto['EUR_PRICE']|number_format(2, ',', '') }}€</h1>
+                    <h1 class="no-margins">{{ crypto['EUR_PRICE']|number_format(2, ',', '') }}{{ currency_symbol }}</h1>
                     <div class="stat-percent font-bold {{ crypto['percentage_diff'] > 1 ? 'text-navy' : 'text-danger' }}">{{ crypto['percentage_diff']|number_format }}% <i class="fa {{ crypto['percentage_diff'] > 1 ? 'fa-level-up' : 'fa-level-down' }}"></i></div>
                     <small>{{ crypto['EUR'] < 1 ? crypto['EUR']|number_format(3, ',', '') : crypto['EUR']|number_format(2, ',', '') }}€/{{ crypto['USD'] < 1 ? crypto['USD']|number_format(3, ',', '') : crypto['USD']|number_format(2, ',', '') }}$</small>
                 </div>

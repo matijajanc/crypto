@@ -40,7 +40,7 @@ class Cryptocurrencies
     }
 
     /**
-     * Get All CryptoCurrencies
+     * Get Cryptocurrencies From All Sources (Wallets, Exchanges)
      * @return array
      */
     public function getCryptocurrencies()

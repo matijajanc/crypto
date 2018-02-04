@@ -18,8 +18,14 @@ class BinanceApi
      */
     protected $apiSecret;
 
+    /**
+     * API URL
+     */
     const BINANCE_URL = "https://www.binance.com/api/";
 
+    /**
+     * Number of milliseconds after timestamp the request is valid for
+     */
     const RECV_WINDOW = 6000000;
 
     /**

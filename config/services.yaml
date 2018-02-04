@@ -2,35 +2,7 @@
 # https://symfony.com/doc/current/best_practices/configuration.html#application-related-configuration
 parameters:
   locale: 'en'
-  money_invested: 1250
-  currencys: [EUR,USD]
-  # Cryptocurrencies in wallets they have number of tokens defined, but you list all tokes that you own
-  cryptocurrencies:
-    ETH:
-      - 0.197
-      - 200
-    XRP:
-      - 119
-      - 300
-    ADA:
-      - 269
-      - 190
-    XLM:
-      - 0
-      - 100
-    TRX:
-      - 3949
-      - 360
-    XVG:
-      - 0
-      - 55
-    BCN:
-      - 0
-      - 25
-    DOGE:
-      - 0
-      - 20
-
+  currencies: [EUR,USD]
   poloniex_api_key: '%env(POLONIEX_API_KEY)%'
   poloniex_api_secret: '%env(POLONIEX_API_SECRET)%'
   binance_api_key: '%env(BINANCE_API_KEY)%'
@@ -62,8 +34,7 @@ services:
 
     App\Service\Cryptocompare\CryptocompareService:
       arguments:
-        $currencys: '%currencys%'
-        $cryptocurrencies: '%cryptocurrencies%'
+        $currencies: '%currencies%'
 
     App\Service\Poloniex\Api\PoloniexApi:
       arguments:
@@ -75,15 +46,6 @@ services:
         $apiKey: '%binance_api_key%'
         $apiSecret: '%binance_api_secret%'
 
-    App\Service\Wallet\WalletService:
-      arguments:
-        $cryptocurrencies: '%cryptocurrencies%'
-
     App\Service\CalculateCrypto\CalculateCryptoService:
       arguments:
-        $money_invested: '%money_invested%'
-        $cryptocurrencies: '%cryptocurrencies%'
-
-    App\Service\Wallet\Mapper\WalletMapper:
-      arguments:
-        $cryptocurrencies: '%cryptocurrencies%'
+        $currencies: '%currencies%'

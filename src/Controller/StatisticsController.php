@@ -2,28 +2,32 @@
 
 namespace App\Controller;
 
+use App\Repository\CryptocurrencyRepository;
 use App\Service\CalculateCrypto\CalculateCryptoService;
-use App\Util\CalculateCryptocurrencies;
 use App\Util\Cryptocurrencies;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\Intl\Intl;
 
 class StatisticsController extends Controller
 {
-    public function index(Cryptocurrencies $cryptocurrencies, CalculateCryptoService $calculateCrypto)
+    /**
+     * Get Statistics For Cryptocurrencies Invested In
+     * @param Cryptocurrencies $cryptocurrencies
+     * @param CalculateCryptoService $calculateCrypto
+     * @param CryptocurrencyRepository $cryptoRepo
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function index(Cryptocurrencies $cryptocurrencies, CalculateCryptoService $calculateCrypto, CryptocurrencyRepository $cryptoRepo)
     {
-        //echo "<pre>";
         $allCryptocurrencies = $cryptocurrencies->getCryptocurrencies();
         $calcCrypto = $calculateCrypto->calcCryptocurrencies($allCryptocurrencies);
         $sumCrypto = $calculateCrypto->sumCryptocurrencies($calcCrypto);
 
-//        echo "<pre>";
-//        var_dump($allCryptocurrencies);
-//        var_dump($calcCrypto);
-//        var_dump($sumCrypto); exit;
-
         return $this->render('statistics.html.twig', [
             'total' => $sumCrypto,
-            'cryptocurrencies' => $calcCrypto
+            'cryptocurrencies' => $calcCrypto,
+            'money_invested' => $cryptoRepo->getTotalInvestedMoney(),
+            'currency_symbol' => Intl::getCurrencyBundle()->getCurrencySymbol($this->getParameter('currencies')[0])
         ]);
     }
 }

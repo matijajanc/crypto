@@ -17,6 +17,12 @@ class Cryptocurrency
     private $id;
 
     /**
+     * @var
+     * @ORM\Column(name="title", type="string", nullable=true)
+     */
+    private $title;
+
+    /**
      * @ORM\Column(name="tokens", type="decimal", scale=3)
      */
     private $tokens;
@@ -32,6 +38,22 @@ class Cryptocurrency
     public function getId()
     {
         return $this->id;
+    }
+
+    /**
+     * @return string
+     */
+    public function getTitle()
+    {
+        return $this->title;
+    }
+
+    /**
+     * @param string $title
+     */
+    public function setTitle($title)
+    {
+        $this->title = $title;
     }
 
     /**

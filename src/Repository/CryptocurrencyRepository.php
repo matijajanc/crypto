@@ -8,21 +8,30 @@ use Symfony\Bridge\Doctrine\RegistryInterface;
 
 class CryptocurrencyRepository extends ServiceEntityRepository
 {
+    /**
+     * CryptocurrencyRepository constructor.
+     * @param RegistryInterface $registry
+     */
     public function __construct(RegistryInterface $registry)
     {
         parent::__construct($registry, Cryptocurrency::class);
     }
 
-    /*
-    public function findBySomething($value)
+    /**
+     * Get Total Invested Money Into Cryptocurrencies
+     * @return float
+     * @throws \Doctrine\ORM\NonUniqueResultException
+     */
+    public function getTotalInvestedMoney(): float
     {
-        return $this->createQueryBuilder('c')
-            ->where('c.something = :value')->setParameter('value', $value)
-            ->orderBy('c.id', 'ASC')
-            ->setMaxResults(10)
+        $qb = $this->createQueryBuilder('c')
+            ->select('SUM(c.investedMoney) AS money')
             ->getQuery()
-            ->getResult()
-        ;
+            ->getOneOrNullResult();
+
+        if (!is_null($qb['money'])) {
+            return $qb['money'];
+        }
+        return 0;
     }
-    */
 }

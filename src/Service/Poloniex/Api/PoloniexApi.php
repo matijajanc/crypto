@@ -7,12 +7,24 @@ use GuzzleHttp\Exception\RequestException;
 
 class PoloniexApi
 {
+    /**
+     * @var string
+     */
     protected $apiKey;
 
+    /**
+     * @var string
+     */
     protected $apiSecret;
 
+    /**
+     * API Trading URL
+     */
     const TRADING_URL = "https://poloniex.com/tradingApi";
 
+    /**
+     * API Public API
+     */
     const PUBLIC_URL = "https://poloniex.com/public";
 
     /**

@@ -20,12 +20,14 @@
                     <li class="nav-header">
                         <div class="dropdown profile-element">
                             <a data-toggle="dropdown" class="dropdown-toggle" href="#">
-                            <span class="clear"> <span class="block m-t-xs"> <strong class="font-bold">Matija Janc</strong>
-                             </span> <span class="text-muted text-xs block">Web developer</span> </span> </a>
+                                <span class="clear">
+                                    <span class="block m-t-xs"> <strong class="font-bold">{{ app.user.username }}</strong></span>
+                                </span>
+                            </a>
                         </div>
                     </li>
                     <li class="active">
-                        <a href="index.html"><i class="fa fa-bar-chart-o"></i> <span class="nav-label">Statistics</span></a>
+                        <a href="{{ path('statistics') }}"><i class="fa fa-bar-chart-o"></i> <span class="nav-label">Statistics</span></a>
                     </li>
                 </ul>
             </div>
@@ -35,7 +37,7 @@
                 <nav class="navbar navbar-static-top white-bg" role="navigation" style="margin-bottom: 0">
                     <ul class="nav navbar-top-links navbar-right">
                         <li>
-                            <a href="login.html"><i class="fa fa-sign-out"></i> Log out</a>
+                            <a href="{{ path('fos_user_security_logout') }}"><i class="fa fa-sign-out"></i> Log out</a>
                         </li>
                     </ul>
                 </nav>

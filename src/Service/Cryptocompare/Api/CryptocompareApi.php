@@ -7,6 +7,9 @@ use GuzzleHttp\Exception\RequestException;
 
 class CryptocompareApi
 {
+    /**
+     * API URL
+     */
     const CRYPTOCOMPARE_URL = 'https://min-api.cryptocompare.com/';
 
     /**

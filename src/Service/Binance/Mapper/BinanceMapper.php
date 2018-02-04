@@ -6,11 +6,6 @@ use App\Service\ExchangeApiMapperInterface;
 
 class BinanceMapper implements ExchangeApiMapperInterface
 {
-    /**
-     * Format Binance Response In Desired Format
-     * @param $balances
-     * @return array
-     */
     public function remapBalances($balances): array
     {
         $cryptos = [];

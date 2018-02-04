@@ -2,14 +2,16 @@
 
 namespace App\Service\Wallet;
 
+use App\Entity\Cryptocurrency;
 use App\Service\Wallet\Mapper\WalletMapper;
+use Doctrine\ORM\EntityManagerInterface;
 
 class WalletService
 {
     /**
-     * @var array
+     * @var EntityManagerInterface
      */
-    protected $cryptocurrencys;
+    protected $em;
 
     /**
      * @var WalletMapper
@@ -18,12 +20,12 @@ class WalletService
 
     /**
      * WalletService constructor.
-     * @param array $cryptocurrencys
+     * @param EntityManagerInterface $em
      * @param WalletMapper $mapper
      */
-    public function __construct(array $cryptocurrencies, WalletMapper $mapper)
+    public function __construct(EntityManagerInterface $em, WalletMapper $mapper)
     {
-        $this->cryptocurrencys = $cryptocurrencies;
+        $this->em = $em;
         $this->mapper = $mapper;
     }
 
@@ -33,6 +35,6 @@ class WalletService
      */
     public function getBalances()
     {
-        return $this->mapper->remapBalances($this->cryptocurrencys);
+        return $this->mapper->remapBalances($this->em->getRepository(Cryptocurrency::class)->findAll());
     }
 }

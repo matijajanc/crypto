@@ -3,6 +3,7 @@
 namespace App\Service\CalculateCrypto;
 
 use App\Helpers\PriceHelper;
+use App\Repository\CryptocurrencyRepository;
 use App\Service\Cryptocompare\CryptocompareService;
 
 class CalculateCryptoService
@@ -10,13 +11,7 @@ class CalculateCryptoService
     /**
      * @var
      */
-    protected $moneyInvested;
-
-    /**
-     * @var
-     */
-    protected $cryptocurrencies;
-
+    protected $currencies;
     /**
      * @var CryptocompareService
      */
@@ -28,39 +23,72 @@ class CalculateCryptoService
     protected $priceHelper;
 
     /**
+     * @var CryptocurrencyRepository
+     */
+    protected $cryptoRepo;
+
+    /**
      * CalculateCryptoService constructor.
-     * @param $money_invested
-     * @param $cryptocurrencies
+     * @param array $currencies
      * @param CryptocompareService $cryptocompare
      * @param PriceHelper $priceHelper
+     * @param CryptocurrencyRepository $cryptoRepo
      */
-    public function __construct($money_invested, $cryptocurrencies, CryptocompareService $cryptocompare, PriceHelper $priceHelper)
+    public function __construct(array $currencies, CryptocompareService $cryptocompare, PriceHelper $priceHelper, CryptocurrencyRepository $cryptoRepo)
     {
-        $this->moneyInvested = $money_invested;
-        $this->cryptocurrencies = $cryptocurrencies;
+        $this->currencies = $currencies;
         $this->cryptocompare = $cryptocompare;
         $this->priceHelper = $priceHelper;
+        $this->cryptoRepo = $cryptoRepo;
     }
 
+    /**
+     * Get Data For Every Cryptocurrency
+     * e.g. [
+     *      crypto value in EUR
+     *      crypto value in USD
+     *      value for 1 token in EUR
+     *      value for 1 token in USD
+     *      number of tokens
+     *      difference between the invested money and the current price
+     * ]
+     * @param array $cryptocurrencies
+     * @return array
+     */
     public function calcCryptocurrencies(array $cryptocurrencies): array
     {
         return $this->calculatePricePerCoin($this->mergeCryptocurrencies($cryptocurrencies));
     }
 
+    /**
+     * Get Total Amount For Each Currency
+     * Sum Each Cryptocurreny For Each Currency
+     * e.g. [
+     *      total in EUR,
+     *      total in USD,
+     *      difference between the invested money and the current price
+     * ]
+     * @param array $cryptocurrencies
+     * @return array
+     */
     public function sumCryptocurrencies(array $cryptocurrencies): array
     {
-        $eur = 0;
-        $usd = 0;
-        foreach ($cryptocurrencies as $cryptocurrency) {
-            $eur += $cryptocurrency['EUR_PRICE'];
-            $usd += $cryptocurrency['USD_PRICE'];
+        foreach ($this->currencies as $item) {
+            ${strtolower($item)} = array_sum(array_column($cryptocurrencies, $item.'_PRICE'));
         }
-        $diff = $this->priceHelper->calculatePercentage($this->moneyInvested, $eur);
-        $eur = $this->priceHelper->priceFormat($eur);
-        $usd = $this->priceHelper->priceFormat($usd);
-        return compact('eur', 'usd', 'diff');
+        $diff = $this->priceHelper->calculatePercentage($this->cryptoRepo->getTotalInvestedMoney(), ${strtolower($this->currencies[0])});
+        return [
+            'eur' => $eur ?? 0,
+            'usd' => $usd ?? 0,
+            'diff' => $diff
+        ];
     }
-    
+
+    /**
+     * Merge Cryptocurrencies From Differente Sources (Wallets, Exchanges)
+     * @param $balances
+     * @return array
+     */
     private function mergeCryptocurrencies($balances)
     {
         $merged = [];
@@ -76,6 +104,12 @@ class CalculateCryptoService
         return $merged;
     }
 
+    /**
+     * Calculate Amount In Currencies For Each Cryptocurrency
+     * And Difference Between The Invested Money And The Current Price For Cryptocurrency
+     * @param array $cryptocurrencies
+     * @return array
+     */
     private function calculatePricePerCoin(array $cryptocurrencies): array
     {
         $tokens = $this->cryptocompare->getMultiPrices();
@@ -84,8 +118,27 @@ class CalculateCryptoService
                 $tokens[$cryptoCode][$currencyCode.'_PRICE'] = $currency * $cryptocurrencies[$cryptoCode];
             }
             $tokens[$cryptoCode]['tokens'] = $cryptocurrencies[$cryptoCode];
-            $tokens[$cryptoCode]['percentage_diff'] = $this->priceHelper->calculatePercentage($this->cryptocurrencies[$cryptoCode][1], (array_shift($item) * $cryptocurrencies[$cryptoCode]));
+            $tokens[$cryptoCode]['percentage_diff'] = $this->priceHelper->calculatePercentage(
+                $this->getInvestedMoneyByCrypto($cryptoCode),
+                (array_shift($item) * $cryptocurrencies[$cryptoCode])
+            );
         }
         return $tokens;
+    }
+
+    /**
+     * Get Invested Money By Cryptocurrency
+     * @param string $cryptoSymbol
+     * @return float
+     */
+    private function getInvestedMoneyByCrypto(string $cryptoSymbol): float
+    {
+        $return = array_filter($this->cryptoRepo->findAll(), function ($item) use ($cryptoSymbol) {
+            return $item->getTitle() === $cryptoSymbol;
+        });
+        if (count($return)) {
+            return array_pop($return)->getInvestedMoney();
+        }
+        return 0;
     }
 }

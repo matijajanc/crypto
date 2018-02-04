@@ -3,6 +3,7 @@
 namespace App\Service\Cryptocompare;
 
 use App\Service\Cryptocompare\Api\CryptocompareApi;
+use App\Service\Wallet\WalletService;
 
 class CryptocompareService
 {
@@ -14,7 +15,7 @@ class CryptocompareService
     /**
      * @var array
      */
-    protected $currencys;
+    protected $currencies;
 
     /**
      * @var array
@@ -23,15 +24,15 @@ class CryptocompareService
 
     /**
      * CryptocompareService constructor.
+     * @param array $currencies
      * @param CryptocompareApi $api
-     * @param array $currencys
-     * @param array $cryptocurrencys
+     * @param WalletService $wallet
      */
-    public function __construct(CryptocompareApi $api, array $currencys, array $cryptocurrencies)
+    public function __construct(array $currencies, CryptocompareApi $api, WalletService $wallet)
     {
         $this->api = $api;
-        $this->currencys = $currencys;
-        $this->cryptocurrencies = $cryptocurrencies;
+        $this->currencies = $currencies;
+        $this->cryptocurrencies = $wallet->getBalances();
     }
 
     /**
@@ -42,7 +43,7 @@ class CryptocompareService
     {
         return $this->api->getCryptocompareApiRequest('data/pricemulti', [
             'fsyms' => implode(',', array_keys($this->cryptocurrencies)),
-            'tsyms' => implode(',', $this->currencys)
+            'tsyms' => implode(',', $this->currencies)
         ]);
     }
 }
