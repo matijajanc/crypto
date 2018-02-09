@@ -4,6 +4,7 @@ namespace App\Service\Poloniex\Api;
 
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\RequestException;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
 class PoloniexApi
 {
@@ -28,14 +29,21 @@ class PoloniexApi
     const PUBLIC_URL = "https://poloniex.com/public";
 
     /**
+     * @var SessionInterface
+     */
+    private $session;
+
+    /**
      * PoloniexApi constructor.
      * @param string $apiKey
      * @param string $apiSecret
+     * @param SessionInterface $session
      */
-    public function __construct(string $apiKey, string $apiSecret) 
+    public function __construct(string $apiKey, string $apiSecret, SessionInterface $session)
     {
         $this->apiKey = $apiKey;
         $this->apiSecret = $apiSecret;
+        $this->session = $session;
     }
 
     /**
@@ -60,13 +68,18 @@ class PoloniexApi
                         'Accept'     => 'application/json'
                     ],
                     'form_params' => $params,
-                    'verify' => false
+                    'verify' => false,
+                    'connect_timeout' => 3
                 ]);
 
             $response = $response->getBody()->getContents();
             return json_decode($response, true);
         } catch (RequestException $e) {
-            return $e->getResponse();
+            $this->session->getFlashBag()->add(
+                'notice',
+                'Poloniex API Request Exception => '. $e->getResponse()
+            );
+            return [];
         }
     }
 

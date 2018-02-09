@@ -9,9 +9,11 @@ class BinanceMapper implements ExchangeApiMapperInterface
     public function remapBalances($balances): array
     {
         $cryptos = [];
-        foreach ($balances['balances'] as $key => $balance) {
-            if ((float) $balance['free'] > 0) {
-                $cryptos[$balance['asset']] = $balance['free'];
+        if (array_key_exists('balances', $balances)) {
+            foreach ($balances['balances'] as $key => $balance) {
+                if ((float)$balance['free'] > 0) {
+                    $cryptos[$balance['asset']] = $balance['free'];
+                }
             }
         }
         return $cryptos;

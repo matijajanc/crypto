@@ -5,6 +5,8 @@ namespace App\Service\Binance\Api;
 
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\RequestException;
+use Symfony\Component\HttpFoundation\Session\Session;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
 class BinanceApi
 {
@@ -29,14 +31,21 @@ class BinanceApi
     const RECV_WINDOW = 6000000;
 
     /**
+     * @var SessionInterface
+     */
+    protected $session;
+
+    /**
      * BinanceApi constructor.
      * @param string $apiKey
      * @param string $apiSecret
+     * @param SessionInterface $session
      */
-    public function __construct(string $apiKey, string $apiSecret)
+    public function __construct(string $apiKey, string $apiSecret, SessionInterface $session)
     {
         $this->apiKey = $apiKey;
         $this->apiSecret = $apiSecret;
+        $this->session = $session;
     }
 
     /**
@@ -62,12 +71,17 @@ class BinanceApi
                     ],
                     'query' => $params,
                     'verify' => false,
-                    'http_errors' => false
+                    'http_errors' => false,
+                    'connect_timeout' => 3
                 ]);
             $response = $response->getBody()->getContents();
             return json_decode($response, true);
         } catch (RequestException $e) {
-            return $e->getResponse();
+            $this->session->getFlashBag()->add(
+                'notice',
+                'Binance API Request Exception => '. $e->getResponse()
+            );
+            return [];
         }
     }
 
