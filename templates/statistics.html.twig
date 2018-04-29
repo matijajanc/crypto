@@ -10,7 +10,7 @@
             </div>
             <div class="ibox-content">
                 <h1 class="no-margins">{{ total['eur']|number_format(2, ',', '') }}{{ currency_symbol }}</h1>
-                <div class="stat-percent font-bold {{ (total['diff'] < 100) ? 'text-danger' : 'text-navy' }}">{{ total['diff']|number_format(2, ',', '') }}% <i class="fa {{ total['diff'] > 1 ? 'fa-level-up' : 'fa-level-down' }}"></i></div>
+                <div class="stat-percent font-bold {{ (total['diff'] > 1) ? 'text-navy' : 'text-danger' }}">{{ total['diff']|number_format(2, ',', '') }}% <i class="fa {{ total['diff'] > 1 ? 'fa-level-up' : 'fa-level-down' }}"></i></div>
                 <small>{{ money_invested }}{{ currency_symbol }}</small>
             </div>
         </div>
