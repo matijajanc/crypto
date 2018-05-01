@@ -7,6 +7,8 @@ parameters:
   poloniex_api_secret: '%env(POLONIEX_API_SECRET)%'
   binance_api_key: '%env(BINANCE_API_KEY)%'
   binance_api_secret: '%env(BINANCE_API_SECRET)%'
+  bittrex_api_key: '%env(BITTREX_API_KEY)%'
+  bittrex_api_secret: '%env(BITTREX_API_SECRET)%'
 
 services:
     # default configuration for services in *this* file
@@ -45,6 +47,11 @@ services:
       arguments:
         $apiKey: '%binance_api_key%'
         $apiSecret: '%binance_api_secret%'
+
+    App\Service\Bittrex\Api\BittrexApi:
+      arguments:
+        $apiKey: '%bittrex_api_key%'
+        $apiSecret: '%bittrex_api_secret%'
 
     App\Service\CalculateCrypto\CalculateCryptoService:
       arguments:
