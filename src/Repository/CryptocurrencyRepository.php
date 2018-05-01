@@ -30,6 +30,9 @@ class CryptocurrencyRepository extends ServiceEntityRepository
             ->getOneOrNullResult();
 
         if (!is_null($qb['money'])) {
+            if (!empty(getenv('INVESTED_MONEY')) && ((float) getenv('INVESTED_MONEY') > 0)) {
+                return (float)getenv('INVESTED_MONEY');
+            }
             return $qb['money'];
         }
         return 0;
