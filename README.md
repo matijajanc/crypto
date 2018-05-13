@@ -11,10 +11,13 @@ In calculation part it sums up tokens in your wallet (DB) and from both exchange
 ## Exchanges Implemented:
 -	Binance
 -	Poloniex
+-   Bittrex
 
 ## Requirements:
--	PHP 7+
+-	PHP 7.1+
 -	sqlite
+-   composer
+-   npm
 ## Specifications:
 -	Symfony 4 framework
 
